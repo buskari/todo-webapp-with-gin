@@ -15,7 +15,11 @@ var (
 	once   sync.Once
 )
 
-func BuildDB() []*domain.Todo {
+type InMemoryRepository struct {
+	todos []*domain.Todo
+}
+
+func buildDB() []*domain.Todo {
 	once.Do(func() {
 		file, err := os.Open("data/todos_seed.csv")
 		if err != nil {
@@ -40,4 +44,10 @@ func BuildDB() []*domain.Todo {
 	})
 
 	return todoDB
+}
+
+func NewTodoRepository() *InMemoryRepository {
+	return &InMemoryRepository{
+		todos: buildDB(),
+	}
 }
