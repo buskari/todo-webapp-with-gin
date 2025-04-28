@@ -1,27 +1,23 @@
 package domain
 
-var lastID int = 0
-
 type Todo struct {
 	id        int
 	Title     string
 	completed bool
+	deleted   bool
 }
 
-func NewTodo(title string) *Todo {
+func NewTodo(id int, title string) *Todo {
 	return &Todo{
-		id:        generateID(),
+		id:        id,
 		Title:     title,
 		completed: false,
+		deleted:   false,
 	}
 }
 
 func (t *Todo) ID() int {
 	return t.id
-}
-
-func (t *Todo) MarkAsCompleted() {
-	t.completed = true
 }
 
 func (t *Todo) ToggleCompleted() {
@@ -32,7 +28,10 @@ func (t *Todo) IsCompleted() bool {
 	return t.completed
 }
 
-func generateID() int {
-	lastID++
-	return lastID
+func (t *Todo) IsDeleted() bool {
+	return t.deleted
+}
+
+func (t *Todo) ToggleDeleted() {
+	t.deleted = !t.deleted
 }
