@@ -1,4 +1,4 @@
-package persistence
+package data
 
 import (
 	"encoding/csv"
@@ -17,7 +17,7 @@ var (
 
 func BuildDB() []*domain.Todo {
 	once.Do(func() {
-		file, err := os.Open("data/todos_seed.csv")
+		file, err := os.Open("internal/data/todos_seed.csv")
 		if err != nil {
 			log.Fatalf("Could not read from source file: %v", err)
 		}
@@ -31,8 +31,9 @@ func BuildDB() []*domain.Todo {
 		}
 
 		todoDB = []*domain.Todo{}
-		for _, task := range tasks {
-			todo := domain.NewTodo(task[0])
+		for id, task := range tasks {
+			id += 1
+			todo := domain.NewTodo(id, task[1])
 			todoDB = append(todoDB, todo)
 		}
 
